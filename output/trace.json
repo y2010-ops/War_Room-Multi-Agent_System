@@ -1,0 +1,567 @@
+[
+  {
+    "t": 1775736714.234,
+    "actor": "Coordinator",
+    "action": "MODE",
+    "detail": "LLM-enhanced (Llama 3.3 via Groq)"
+  },
+  {
+    "t": 1775736714.234,
+    "actor": "Coordinator",
+    "action": "ORCHESTRATION_START",
+    "detail": "war-room convened"
+  },
+  {
+    "t": 1775736714.234,
+    "actor": "Coordinator",
+    "action": "HANDOFF",
+    "detail": "-> Data Analyst"
+  },
+  {
+    "t": 1775736714.235,
+    "actor": "Data_Analyst",
+    "action": "START",
+    "detail": "analyzing metric dashboard (LLM-enhanced)"
+  },
+  {
+    "t": 1775736714.235,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::aggregate_metric",
+    "detail": {
+      "args": {
+        "metric": "activation_rate"
+      },
+      "result": {
+        "metric": "activation_rate",
+        "pre_mean": 0.4271,
+        "post_mean": 0.4843,
+        "delta_pct": 13.38
+      }
+    }
+  },
+  {
+    "t": 1775736714.236,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::trend",
+    "detail": {
+      "args": {
+        "metric": "activation_rate"
+      },
+      "result": {
+        "metric": "activation_rate",
+        "slope": 0.00679,
+        "direction": "rising"
+      }
+    }
+  },
+  {
+    "t": 1775736714.236,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::detect_anomalies",
+    "detail": {
+      "args": {
+        "metric": "activation_rate",
+        "z_threshold": 1.8
+      },
+      "result": {
+        "metric": "activation_rate",
+        "mean": 0.4557,
+        "stdev": 0.0311,
+        "anomalies": []
+      }
+    }
+  },
+  {
+    "t": 1775736714.237,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::aggregate_metric",
+    "detail": {
+      "args": {
+        "metric": "dau"
+      },
+      "result": {
+        "metric": "dau",
+        "pre_mean": 12228.5714,
+        "post_mean": 13801.4286,
+        "delta_pct": 12.86
+      }
+    }
+  },
+  {
+    "t": 1775736714.237,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::trend",
+    "detail": {
+      "args": {
+        "metric": "dau"
+      },
+      "result": {
+        "metric": "dau",
+        "slope": 192.14286,
+        "direction": "rising"
+      }
+    }
+  },
+  {
+    "t": 1775736714.238,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::detect_anomalies",
+    "detail": {
+      "args": {
+        "metric": "dau",
+        "z_threshold": 1.8
+      },
+      "result": {
+        "metric": "dau",
+        "mean": 13015.0,
+        "stdev": 847.195,
+        "anomalies": []
+      }
+    }
+  },
+  {
+    "t": 1775736714.238,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::aggregate_metric",
+    "detail": {
+      "args": {
+        "metric": "d1_retention"
+      },
+      "result": {
+        "metric": "d1_retention",
+        "pre_mean": 0.5871,
+        "post_mean": 0.58,
+        "delta_pct": -1.22
+      }
+    }
+  },
+  {
+    "t": 1775736714.239,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::trend",
+    "detail": {
+      "args": {
+        "metric": "d1_retention"
+      },
+      "result": {
+        "metric": "d1_retention",
+        "slope": -0.01,
+        "direction": "falling"
+      }
+    }
+  },
+  {
+    "t": 1775736714.242,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::detect_anomalies",
+    "detail": {
+      "args": {
+        "metric": "d1_retention",
+        "z_threshold": 1.8
+      },
+      "result": {
+        "metric": "d1_retention",
+        "mean": 0.5836,
+        "stdev": 0.0163,
+        "anomalies": [
+          {
+            "day": 14,
+            "value": 0.55,
+            "z": -2.06
+          }
+        ]
+      }
+    }
+  },
+  {
+    "t": 1775736714.244,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::aggregate_metric",
+    "detail": {
+      "args": {
+        "metric": "crash_rate"
+      },
+      "result": {
+        "metric": "crash_rate",
+        "pre_mean": 0.011,
+        "post_mean": 0.0291,
+        "delta_pct": 164.94
+      }
+    }
+  },
+  {
+    "t": 1775736714.246,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::trend",
+    "detail": {
+      "args": {
+        "metric": "crash_rate"
+      },
+      "result": {
+        "metric": "crash_rate",
+        "slope": 0.00268,
+        "direction": "rising"
+      }
+    }
+  },
+  {
+    "t": 1775736714.248,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::detect_anomalies",
+    "detail": {
+      "args": {
+        "metric": "crash_rate",
+        "z_threshold": 1.8
+      },
+      "result": {
+        "metric": "crash_rate",
+        "mean": 0.0201,
+        "stdev": 0.0099,
+        "anomalies": []
+      }
+    }
+  },
+  {
+    "t": 1775736714.248,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::aggregate_metric",
+    "detail": {
+      "args": {
+        "metric": "api_p95_ms"
+      },
+      "result": {
+        "metric": "api_p95_ms",
+        "pre_mean": 422.5714,
+        "post_mean": 656.4286,
+        "delta_pct": 55.34
+      }
+    }
+  },
+  {
+    "t": 1775736714.249,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::trend",
+    "detail": {
+      "args": {
+        "metric": "api_p95_ms"
+      },
+      "result": {
+        "metric": "api_p95_ms",
+        "slope": 37.5,
+        "direction": "rising"
+      }
+    }
+  },
+  {
+    "t": 1775736714.249,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::detect_anomalies",
+    "detail": {
+      "args": {
+        "metric": "api_p95_ms",
+        "z_threshold": 1.8
+      },
+      "result": {
+        "metric": "api_p95_ms",
+        "mean": 539.5,
+        "stdev": 129.511,
+        "anomalies": []
+      }
+    }
+  },
+  {
+    "t": 1775736714.25,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::aggregate_metric",
+    "detail": {
+      "args": {
+        "metric": "payment_success_rate"
+      },
+      "result": {
+        "metric": "payment_success_rate",
+        "pre_mean": 0.9846,
+        "post_mean": 0.957,
+        "delta_pct": -2.8
+      }
+    }
+  },
+  {
+    "t": 1775736714.251,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::trend",
+    "detail": {
+      "args": {
+        "metric": "payment_success_rate"
+      },
+      "result": {
+        "metric": "payment_success_rate",
+        "slope": -0.00639,
+        "direction": "falling"
+      }
+    }
+  },
+  {
+    "t": 1775736714.251,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::detect_anomalies",
+    "detail": {
+      "args": {
+        "metric": "payment_success_rate",
+        "z_threshold": 1.8
+      },
+      "result": {
+        "metric": "payment_success_rate",
+        "mean": 0.9708,
+        "stdev": 0.0166,
+        "anomalies": []
+      }
+    }
+  },
+  {
+    "t": 1775736714.252,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::aggregate_metric",
+    "detail": {
+      "args": {
+        "metric": "adoption_funnel"
+      },
+      "result": {
+        "metric": "adoption_funnel",
+        "pre_mean": 0.0,
+        "post_mean": 0.5043,
+        "delta_pct": 0.0
+      }
+    }
+  },
+  {
+    "t": 1775736714.253,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::trend",
+    "detail": {
+      "args": {
+        "metric": "adoption_funnel"
+      },
+      "result": {
+        "metric": "adoption_funnel",
+        "slope": 0.04714,
+        "direction": "rising"
+      }
+    }
+  },
+  {
+    "t": 1775736714.254,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::detect_anomalies",
+    "detail": {
+      "args": {
+        "metric": "adoption_funnel",
+        "z_threshold": 1.8
+      },
+      "result": {
+        "metric": "adoption_funnel",
+        "mean": 0.2521,
+        "stdev": 0.2618,
+        "anomalies": []
+      }
+    }
+  },
+  {
+    "t": 1775736714.255,
+    "actor": "Data_Analyst",
+    "action": "TOOL_CALL::overall_metric_severity",
+    "detail": {
+      "args": {},
+      "result": 0.614
+    }
+  },
+  {
+    "t": 1775736714.255,
+    "actor": "Data_Analyst",
+    "action": "LLM_CALL",
+    "detail": "interpreting tool outputs"
+  },
+  {
+    "t": 1775736717.497,
+    "actor": "Data_Analyst",
+    "action": "LLM_RESULT",
+    "detail": {
+      "recommendation": "pause",
+      "confidence": "medium"
+    }
+  },
+  {
+    "t": 1775736717.498,
+    "actor": "Data_Analyst",
+    "action": "DONE",
+    "detail": "severity=0.614, concerning=3"
+  },
+  {
+    "t": 1775736717.498,
+    "actor": "Coordinator",
+    "action": "HANDOFF",
+    "detail": "Data Analyst -> PM"
+  },
+  {
+    "t": 1775736717.498,
+    "actor": "PM_Agent",
+    "action": "START",
+    "detail": "defining success criteria and go/no-go frame (LLM-enhanced)"
+  },
+  {
+    "t": 1775736717.499,
+    "actor": "PM_Agent",
+    "action": "FRAME_DECISION",
+    "detail": "NO-GO (at least one must-hold criterion violated)"
+  },
+  {
+    "t": 1775736717.499,
+    "actor": "PM_Agent",
+    "action": "LLM_CALL",
+    "detail": "generating user-impact assessment and reasoning"
+  },
+  {
+    "t": 1775736718.755,
+    "actor": "PM_Agent",
+    "action": "LLM_RESULT",
+    "detail": {
+      "recommendation": "rollback",
+      "severity": "high"
+    }
+  },
+  {
+    "t": 1775736718.756,
+    "actor": "PM_Agent",
+    "action": "DONE",
+    "detail": "3 violations, 3 blocking"
+  },
+  {
+    "t": 1775736718.757,
+    "actor": "Coordinator",
+    "action": "HANDOFF",
+    "detail": "PM -> Marketing/Comms"
+  },
+  {
+    "t": 1775736718.757,
+    "actor": "Marketing_Comms",
+    "action": "START",
+    "detail": "assessing user perception + drafting comms (LLM-enhanced)"
+  },
+  {
+    "t": 1775736718.759,
+    "actor": "Marketing_Comms",
+    "action": "TOOL_CALL::summarize_sentiment",
+    "detail": {
+      "args": {
+        "n": 30
+      },
+      "result": {
+        "total": 30,
+        "positive": 9,
+        "neutral": 5,
+        "negative": 16
+      }
+    }
+  },
+  {
+    "t": 1775736718.76,
+    "actor": "Marketing_Comms",
+    "action": "TOOL_CALL::cluster_issues",
+    "detail": {
+      "args": {
+        "n": 30
+      },
+      "result": {
+        "themes": 5
+      }
+    }
+  },
+  {
+    "t": 1775736718.76,
+    "actor": "Marketing_Comms",
+    "action": "PERCEPTION",
+    "detail": "hostile"
+  },
+  {
+    "t": 1775736718.761,
+    "actor": "Marketing_Comms",
+    "action": "LLM_CALL",
+    "detail": "generating perception analysis and comms drafts"
+  },
+  {
+    "t": 1775736720.568,
+    "actor": "Marketing_Comms",
+    "action": "LLM_RESULT",
+    "detail": {
+      "recommendation": "pause",
+      "perception": "hostile"
+    }
+  },
+  {
+    "t": 1775736720.569,
+    "actor": "Marketing_Comms",
+    "action": "DONE",
+    "detail": "neg_ratio=0.533"
+  },
+  {
+    "t": 1775736720.569,
+    "actor": "Coordinator",
+    "action": "HANDOFF",
+    "detail": "Marketing -> Risk/Critic"
+  },
+  {
+    "t": 1775736720.57,
+    "actor": "Risk_Critic",
+    "action": "START",
+    "detail": "challenging assumptions and building risk register (LLM-enhanced)"
+  },
+  {
+    "t": 1775736720.571,
+    "actor": "Risk_Critic",
+    "action": "LLM_CALL",
+    "detail": "generating challenges and enhanced risk analysis"
+  },
+  {
+    "t": 1775736722.645,
+    "actor": "Risk_Critic",
+    "action": "LLM_RESULT",
+    "detail": {
+      "recommendation": "rollback",
+      "risk_score": 0.9,
+      "num_challenges": 3
+    }
+  },
+  {
+    "t": 1775736722.649,
+    "actor": "Risk_Critic",
+    "action": "RISK_SCORE",
+    "detail": 0.9
+  },
+  {
+    "t": 1775736722.651,
+    "actor": "Risk_Critic",
+    "action": "DONE",
+    "detail": "3 risks, score=0.9"
+  },
+  {
+    "t": 1775736722.651,
+    "actor": "Coordinator",
+    "action": "HANDOFF",
+    "detail": "Risk/Critic -> Coordinator (final synthesis)"
+  },
+  {
+    "t": 1775736722.653,
+    "actor": "Coordinator",
+    "action": "DECISION",
+    "detail": {
+      "decision": "Roll Back",
+      "composite_score": 0.647,
+      "confidence": 0.63
+    }
+  },
+  {
+    "t": 1775736722.654,
+    "actor": "Coordinator",
+    "action": "ORCHESTRATION_DONE",
+    "detail": "decision=Roll Back"
+  }
+]

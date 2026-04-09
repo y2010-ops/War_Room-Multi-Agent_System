@@ -1,0 +1,380 @@
+{
+  "decision": "Roll Back",
+  "confidence_score": 0.63,
+  "composite_severity": 0.647,
+  "rationale": [
+    {
+      "type": "metric",
+      "detail": "crash_rate +164.9% vs baseline"
+    },
+    {
+      "type": "metric",
+      "detail": "api_p95_ms +55.3% vs baseline"
+    },
+    {
+      "type": "metric",
+      "detail": "payment_success_rate -2.8% vs baseline"
+    },
+    {
+      "type": "criterion",
+      "detail": "post crash rate 2.9% > 1.5x baseline 1.1%"
+    },
+    {
+      "type": "criterion",
+      "detail": "p95 latency 656ms > 1.25x baseline 423ms"
+    },
+    {
+      "type": "criterion",
+      "detail": "payment success 95.7% below 98.0% target"
+    },
+    {
+      "type": "feedback",
+      "detail": "16 negative / 30 entries; perception=hostile"
+    }
+  ],
+  "success_criteria_frame": "NO-GO (at least one must-hold criterion violated)",
+  "blocking_violations": [
+    {
+      "metric": "crash_rate",
+      "must_hold": true,
+      "reason": "post crash rate 2.9% > 1.5x baseline 1.1%"
+    },
+    {
+      "metric": "api_p95_ms",
+      "must_hold": true,
+      "reason": "p95 latency 656ms > 1.25x baseline 423ms"
+    },
+    {
+      "metric": "payment_success_rate",
+      "must_hold": true,
+      "reason": "payment success 95.7% below 98.0% target"
+    }
+  ],
+  "metric_summary": {
+    "severity": 0.614,
+    "concerning_metrics": [
+      "crash_rate +164.9% vs baseline",
+      "api_p95_ms +55.3% vs baseline",
+      "payment_success_rate -2.8% vs baseline"
+    ],
+    "aggregates": [
+      {
+        "metric": "activation_rate",
+        "pre_mean": 0.4271,
+        "post_mean": 0.4843,
+        "delta_pct": 13.38,
+        "latest": 0.5
+      },
+      {
+        "metric": "dau",
+        "pre_mean": 12228.5714,
+        "post_mean": 13801.4286,
+        "delta_pct": 12.86,
+        "latest": 14250.0
+      },
+      {
+        "metric": "d1_retention",
+        "pre_mean": 0.5871,
+        "post_mean": 0.58,
+        "delta_pct": -1.22,
+        "latest": 0.55
+      },
+      {
+        "metric": "crash_rate",
+        "pre_mean": 0.011,
+        "post_mean": 0.0291,
+        "delta_pct": 164.94,
+        "latest": 0.035
+      },
+      {
+        "metric": "api_p95_ms",
+        "pre_mean": 422.5714,
+        "post_mean": 656.4286,
+        "delta_pct": 55.34,
+        "latest": 740.0
+      },
+      {
+        "metric": "payment_success_rate",
+        "pre_mean": 0.9846,
+        "post_mean": 0.957,
+        "delta_pct": -2.8,
+        "latest": 0.941
+      },
+      {
+        "metric": "adoption_funnel",
+        "pre_mean": 0.0,
+        "post_mean": 0.5043,
+        "delta_pct": 0.0,
+        "latest": 0.61
+      }
+    ],
+    "anomalies": [
+      {
+        "metric": "d1_retention",
+        "mean": 0.5836,
+        "stdev": 0.0163,
+        "anomalies": [
+          {
+            "day": 14,
+            "value": 0.55,
+            "z": -2.06
+          }
+        ]
+      }
+    ]
+  },
+  "feedback_summary": {
+    "sentiment": {
+      "total": 30,
+      "positive": 9,
+      "neutral": 5,
+      "negative": 16,
+      "negative_ratio": 0.533,
+      "positive_ratio": 0.3
+    },
+    "perception": "hostile",
+    "top_issue_themes": [
+      {
+        "theme": "crashes",
+        "count": 7,
+        "examples": [
+          "App crashed twice when I tried to open the new feature.",
+          "Crash on checkout. Lost my cart."
+        ]
+      },
+      {
+        "theme": "payments",
+        "count": 6,
+        "examples": [
+          "Payment failed three times today, had to retry from a different device.",
+          "Crash on checkout. Lost my cart."
+        ]
+      },
+      {
+        "theme": "latency",
+        "count": 6,
+        "examples": [
+          "Everything feels much slower since the update, pages take forever to load.",
+          "I keep getting a spinning loader on the home screen."
+        ]
+      },
+      {
+        "theme": "ux_confusion",
+        "count": 2,
+        "examples": [
+          "Love the new dashboard, finally easy to find reports!",
+          "The new feature is confusing, I cannot find the export button."
+        ]
+      },
+      {
+        "theme": "auth_session",
+        "count": 1,
+        "examples": [
+          "Random logout in the middle of a session."
+        ]
+      }
+    ]
+  },
+  "risk_register": [
+    {
+      "id": "R-CRASH-01",
+      "title": "Crash-rate regression post-launch",
+      "severity": "high",
+      "evidence": "crash_rate +165% (pre 1.1% -> post 2.9%)",
+      "mitigation": "Flip feature flag off for older Android; collect crash traces and perform correlation analysis with other metrics"
+    },
+    {
+      "id": "R-LAT-01",
+      "title": "Latency regression in aggregation service",
+      "severity": "high",
+      "evidence": "api_p95_ms +55% (pre 423ms -> post 656ms)",
+      "mitigation": "Profile agg-svc hot path; add caching; consider reverting and perform end-to-end latency monitoring and tracing"
+    },
+    {
+      "id": "R-PAY-01",
+      "title": "Payment success dip",
+      "severity": "high",
+      "evidence": "payment_success_rate -2.8% (pre 98.5% -> post 95.7%)",
+      "mitigation": "Pin payments SDK back to v3.1.4 via remote config; perform A/B testing to compare payment success rate between old and new payments SDK"
+    }
+  ],
+  "action_plan_24_48h": [
+    {
+      "window": "0-2h",
+      "owner": "Release Manager",
+      "action": "Flip `smart_dashboard_v2` flag OFF globally and initiate rollback runbook."
+    },
+    {
+      "window": "0-24h",
+      "owner": "Mobile Team",
+      "action": "Crash-rate regression post-launch: Flip feature flag off for older Android; collect crash traces and perform correlation analysis with other metrics"
+    },
+    {
+      "window": "0-24h",
+      "owner": "Engineering Lead",
+      "action": "Latency regression in aggregation service: Profile agg-svc hot path; add caching; consider reverting and perform end-to-end latency monitoring and tracing"
+    },
+    {
+      "window": "0-24h",
+      "owner": "Payments Team",
+      "action": "Payment success dip: Pin payments SDK back to v3.1.4 via remote config; perform A/B testing to compare payment success rate between old and new payments SDK"
+    },
+    {
+      "window": "12-24h",
+      "owner": "Data Team",
+      "action": "Publish per-device crash breakdown and payment failure reason codes (identified as missing evidence)."
+    },
+    {
+      "window": "24-48h",
+      "owner": "Product Manager",
+      "action": "Reconvene war room with refreshed dashboard + cohort retention to re-evaluate decision."
+    }
+  ],
+  "communication_plan": {
+    "internal": "We're seeing a high volume of negative feedback related to crashes, payment issues, and latency problems. The engineering team should prioritize fixing these issues ASAP to mitigate brand risk. A detailed review of the issue clusters is necessary to identify the root causes.",
+    "external": "We apologize for the frustrating experience many of you are having with our latest update. We're actively working to resolve the issues with crashes, payments, and slow loading times. We appreciate your patience and will provide updates on our progress. If you're experiencing any problems, please don't hesitate to reach out to our support team.",
+    "hold_marketing_push": true
+  },
+  "what_would_increase_confidence": [
+    "Correlation analysis between crash rate and other metrics",
+    "End-to-end latency monitoring and tracing",
+    "A/B testing to compare payment success rate between old and new payments SDK",
+    "Analysis of the checkout flow and Redis session migration"
+  ],
+  "critic_challenges": [
+    "The crash rate could be influenced by other factors such as the new aggregation service or the payments SDK",
+    "The latency issue could be more widespread, affecting other parts of the application",
+    "The payment success rate could be influenced by other factors such as the new checkout flow or the Redis session migration"
+  ],
+  "mode": "llm-enhanced",
+  "llm_agent_reasoning": {
+    "data_analyst": {
+      "agent": "data_analyst",
+      "metric_health": [
+        {
+          "metric": "activation_rate",
+          "status": "healthy",
+          "detail": "The activation rate has increased by 13.38% with a rising trend, but the overall value of 0.4843 is still relatively low."
+        },
+        {
+          "metric": "dau",
+          "status": "healthy",
+          "detail": "The daily active users have increased by 12.86% with a rising trend, reaching 13801.4286 users."
+        },
+        {
+          "metric": "d1_retention",
+          "status": "degraded",
+          "detail": "The day 1 retention rate has decreased by 1.22% with a falling trend, and 1 anomaly was found, which may indicate a problem with user engagement."
+        },
+        {
+          "metric": "crash_rate",
+          "status": "critical",
+          "detail": "The crash rate has increased by 164.94% with a rising trend, reaching 0.0291, which is a significant concern for user experience."
+        },
+        {
+          "metric": "api_p95_ms",
+          "status": "degraded",
+          "detail": "The API response time has increased by 55.34% with a rising trend, reaching 656.4286 ms, which may impact user experience."
+        },
+        {
+          "metric": "payment_success_rate",
+          "status": "degraded",
+          "detail": "The payment success rate has decreased by 2.8% with a falling trend, reaching 0.957, which may affect revenue."
+        },
+        {
+          "metric": "adoption_funnel",
+          "status": "healthy",
+          "detail": "The adoption funnel has increased from 0 to 0.5043 with a rising trend, which is a positive sign for user adoption."
+        }
+      ],
+      "critical_findings": [
+        "The crash rate has increased by 164.94%",
+        "The API response time has increased by 55.34%",
+        "The d1_retention rate has decreased by 1.22% with an anomaly found"
+      ],
+      "confidence": "medium",
+      "confidence_reasoning": "The data quality is medium because the overall metric severity score is 0.614, which is closer to the critical threshold of 1, and some metrics like crash rate and API response time have shown significant increases, but there are no anomalies found in most metrics, which suggests that the data is mostly reliable.",
+      "recommendation": "pause",
+      "recommendation_reasoning": "I recommend pausing the product launch due to the significant increase in crash rate and API response time, which may impact user experience. Additionally, the decrease in d1_retention rate with an anomaly found requires further investigation to ensure that the product is ready for launch. It is better to address these concerns before proceeding with the launch to avoid potential reputational damage and revenue loss."
+    },
+    "pm": {
+      "agent": "product_manager",
+      "user_impact": {
+        "severity": "high",
+        "affected_segments": [
+          "all users"
+        ],
+        "description": "The increased crash rate of 2.9% and p95 latency of 656ms are significantly impacting user experience, leading to frustration and potential loss of trust. The payment success rate of 95.7% is also below the target, affecting users' ability to complete transactions."
+      },
+      "go_no_go_reasoning": "The launch has violated multiple must-hold criteria, including crash rate, API latency, and payment success rate. These metrics are critical to providing a seamless user experience and ensuring the reliability of our service. Given the severity of these violations, it's clear that the launch is not meeting our quality standards. Proceeding with the current state would risk further eroding user trust and potentially causing long-term damage to our reputation.",
+      "tradeoff": "If we roll back, we lose the potential benefits of the new features and updates, which may have been driving the increased activation rate and DAU. However, if we continue with the current state, users will suffer from a subpar experience, leading to increased churn and negative word-of-mouth.",
+      "recommendation": "rollback"
+    },
+    "marketing": {
+      "agent": "marketing_comms",
+      "perception": "hostile",
+      "brand_risk": "high",
+      "brand_risk_reasoning": "The high negative sentiment ratio and frequent reports of crashes, payment issues, and latency problems pose a significant threat to our brand reputation. If left unaddressed, these issues could lead to a loss of customer trust and loyalty.",
+      "comms_draft": {
+        "internal": "We're seeing a high volume of negative feedback related to crashes, payment issues, and latency problems. The engineering team should prioritize fixing these issues ASAP to mitigate brand risk. A detailed review of the issue clusters is necessary to identify the root causes.",
+        "external": "We apologize for the frustrating experience many of you are having with our latest update. We're actively working to resolve the issues with crashes, payments, and slow loading times. We appreciate your patience and will provide updates on our progress. If you're experiencing any problems, please don't hesitate to reach out to our support team.",
+        "hold_marketing_push": true
+      },
+      "recommendation": "pause",
+      "recommendation_reasoning": "Given the hostile customer perception and high brand risk, it's essential to pause our marketing push until the critical issues are resolved. This will prevent further frustrating our customers and allow us to regain their trust once the problems are fixed."
+    },
+    "risk_critic": {
+      "agent": "risk_critic",
+      "challenges": [
+        {
+          "assumption": "The crash rate increase is solely due to the new feature",
+          "challenge": "The crash rate could be influenced by other factors such as the new aggregation service or the payments SDK",
+          "evidence_needed": "Correlation analysis between crash rate and other metrics, such as API latency and payment success rate"
+        },
+        {
+          "assumption": "The latency regression is only affecting the aggregation service",
+          "challenge": "The latency issue could be more widespread, affecting other parts of the application",
+          "evidence_needed": "End-to-end latency monitoring and tracing to identify the root cause of the latency regression"
+        },
+        {
+          "assumption": "The payment success rate dip is due to the new payments SDK",
+          "challenge": "The payment success rate could be influenced by other factors such as the new checkout flow or the Redis session migration",
+          "evidence_needed": "A/B testing to compare the payment success rate between the old and new payments SDK, as well as analysis of the checkout flow and Redis session migration"
+        }
+      ],
+      "risk_register": [
+        {
+          "id": "R-CRASH-01",
+          "title": "Crash-rate regression post-launch",
+          "severity": "high",
+          "evidence": "crash_rate +165% (pre 1.1% -> post 2.9%)",
+          "mitigation": "Flip feature flag off for older Android; collect crash traces and perform correlation analysis with other metrics"
+        },
+        {
+          "id": "R-LAT-01",
+          "title": "Latency regression in aggregation service",
+          "severity": "high",
+          "evidence": "api_p95_ms +55% (pre 423ms -> post 656ms)",
+          "mitigation": "Profile agg-svc hot path; add caching; consider reverting and perform end-to-end latency monitoring and tracing"
+        },
+        {
+          "id": "R-PAY-01",
+          "title": "Payment success dip",
+          "severity": "high",
+          "evidence": "payment_success_rate -2.8% (pre 98.5% -> post 95.7%)",
+          "mitigation": "Pin payments SDK back to v3.1.4 via remote config; perform A/B testing to compare payment success rate between old and new payments SDK"
+        }
+      ],
+      "missing_evidence": [
+        "Correlation analysis between crash rate and other metrics",
+        "End-to-end latency monitoring and tracing",
+        "A/B testing to compare payment success rate between old and new payments SDK",
+        "Analysis of the checkout flow and Redis session migration"
+      ],
+      "worst_case_scenario": "If the team proceeds with the launch without addressing the critical issues, the crash rate, latency, and payment success rate problems could lead to a significant loss of user trust, resulting in increased churn, negative word-of-mouth, and long-term damage to the company's reputation. This could ultimately lead to a decline in revenue and a loss of market share.",
+      "risk_score": 0.9,
+      "recommendation": "rollback",
+      "dissent_note": "While the data analyst and marketing reports suggest pausing the launch, I strongly recommend rolling back to the previous version to avoid further exacerbating the issues and to prevent long-term damage to the company's reputation. The potential benefits of the new features and updates do not outweigh the risks associated with the current state of the application."
+    }
+  }
+}
