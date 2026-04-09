@@ -1,4 +1,4 @@
-# PurpleMerit War-Room — Multi-Agent Launch Decision System
+# War-Room — Multi-Agent Launch Decision System
 
 A **multi-agent system** that simulates a cross-functional "war room" during a
 product launch. It ingests a mock metrics dashboard and user feedback, runs
