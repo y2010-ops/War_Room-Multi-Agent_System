@@ -1,0 +1,5 @@
+# Deterministic mode: no dependencies needed (Python 3.9+ stdlib only).
+#
+# LLM-enhanced mode (--llm flag): uncomment below or install manually.
+# pip install openai
+openai>=1.30.0

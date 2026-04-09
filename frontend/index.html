@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PurpleMerit · War-Room Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Ambient background blobs -->
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <!-- ───────────── Top bar ───────────── -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3v18M3 12h18"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">War-Room <span>Visualizer</span></div>
+        <div class="brand-sub">Multi-Agent Launch Decision System · PurpleMerit</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div class="legend">
+        <span class="dot idle"></span> Idle
+        <span class="dot active"></span> Active
+        <span class="dot done"></span> Done
+      </div>
+      <button id="runBtn" class="run-btn">
+        <span class="run-btn-label">Convene War Room</span>
+        <span class="run-btn-arrow">▶</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ───────────── Hero: Flowchart ───────────── -->
+  <section class="hero">
+    <div class="hero-head">
+      <h2>Agent Orchestration Flow</h2>
+      <p>The Coordinator dispatches four specialized agents in sequence. Each agent invokes tools, hands its findings to the next, then the Coordinator synthesizes the final decision.</p>
+    </div>
+
+    <div class="flow-wrap">
+      <div class="flow-canvas" id="flowCanvas">
+
+        <!-- SVG arrow layer -->
+        <svg class="arrow-layer" viewBox="0 0 1360 600" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <!-- Arrowheads -->
+            <marker id="arrow-idle" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#3b4680"/>
+            </marker>
+            <marker id="arrow-active" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/>
+            </marker>
+            <marker id="arrow-done" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#22c55e"/>
+            </marker>
+
+            <!-- Gradients for nodes if needed in SVG -->
+            <linearGradient id="flow-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"  stop-color="#8b5cf6"/>
+              <stop offset="100%" stop-color="#38bdf8"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Horizontal pipeline arrows -->
+          <path id="arr-inp-da"   class="flow-arrow" d="M 210 405 L 280 405"   marker-end="url(#arrow-idle)"/>
+          <path id="arr-da-pm"    class="flow-arrow" d="M 440 405 L 510 405"   marker-end="url(#arrow-idle)"/>
+          <path id="arr-pm-mk"    class="flow-arrow" d="M 650 405 L 720 405"   marker-end="url(#arrow-idle)"/>
+          <path id="arr-mk-rk"    class="flow-arrow" d="M 880 405 L 950 405"   marker-end="url(#arrow-idle)"/>
+          <path id="arr-rk-dc"    class="flow-arrow" d="M 1110 405 L 1180 405" marker-end="url(#arrow-idle)"/>
+
+          <!-- Orchestration lines: Coordinator (top center ~680,95) -> each agent top -->
+          <path id="orc-da" class="orc-line" d="M 680 140 C 680 220, 360 220, 360 360"/>
+          <path id="orc-pm" class="orc-line" d="M 680 140 C 680 220, 580 220, 580 360"/>
+          <path id="orc-mk" class="orc-line" d="M 680 140 C 680 220, 800 220, 800 360"/>
+          <path id="orc-rk" class="orc-line" d="M 680 140 C 680 220, 1030 220, 1030 360"/>
+
+          <!-- Return arrow from Risk back to Coordinator (feedback loop) -->
+          <path id="orc-return" class="orc-return" d="M 1030 360 C 1030 240, 790 180, 760 140" marker-end="url(#arrow-idle)"/>
+        </svg>
+
+        <!-- Coordinator hub node -->
+        <div class="node coord-node idle" id="node-coord" style="left: 580px; top: 40px; width: 200px;">
+          <div class="node-head">
+            <div class="node-icon">◆</div>
+            <div class="node-title">Coordinator</div>
+          </div>
+          <div class="node-role">Orchestrator</div>
+          <div class="node-status"><span class="status-dot"></span><span class="status-text">idle</span></div>
+        </div>
+
+        <!-- Inputs node -->
+        <div class="node input-node idle" id="node-inputs" style="left: 70px; top: 350px; width: 140px;">
+          <div class="node-head">
+            <div class="node-icon">⬢</div>
+            <div class="node-title">Inputs</div>
+          </div>
+          <div class="node-role">Dashboard</div>
+          <div class="node-chips">
+            <span class="mini-chip">metrics.csv</span>
+            <span class="mini-chip">feedback.json</span>
+            <span class="mini-chip">release_notes</span>
+          </div>
+        </div>
+
+        <!-- Data Analyst -->
+        <div class="node agent-node idle" id="node-data" style="left: 280px; top: 350px; width: 160px;">
+          <div class="node-head">
+            <div class="node-icon da">📊</div>
+            <div class="node-title">Data Analyst</div>
+          </div>
+          <div class="node-role">Metrics · Trends · Anomalies</div>
+          <div class="node-status"><span class="status-dot"></span><span class="status-text">idle</span></div>
+          <div class="tool-chips">
+            <div class="tool-chip" data-tool="aggregate_metric">🔧 aggregate_metric</div>
+            <div class="tool-chip" data-tool="trend">🔧 trend</div>
+            <div class="tool-chip" data-tool="detect_anomalies">🔧 detect_anomalies</div>
+          </div>
+        </div>
+
+        <!-- PM Agent -->
+        <div class="node agent-node idle" id="node-pm" style="left: 510px; top: 350px; width: 140px;">
+          <div class="node-head">
+            <div class="node-icon pm">🎯</div>
+            <div class="node-title">PM Agent</div>
+          </div>
+          <div class="node-role">Success Criteria · Go/No-Go</div>
+          <div class="node-status"><span class="status-dot"></span><span class="status-text">idle</span></div>
+        </div>
+
+        <!-- Marketing / Comms -->
+        <div class="node agent-node idle" id="node-marketing" style="left: 720px; top: 350px; width: 160px;">
+          <div class="node-head">
+            <div class="node-icon mk">📣</div>
+            <div class="node-title">Marketing</div>
+          </div>
+          <div class="node-role">Sentiment · Perception · Comms</div>
+          <div class="node-status"><span class="status-dot"></span><span class="status-text">idle</span></div>
+          <div class="tool-chips">
+            <div class="tool-chip" data-tool="summarize_sentiment">🔧 summarize_sentiment</div>
+            <div class="tool-chip" data-tool="cluster_issues">🔧 cluster_issues</div>
+          </div>
+        </div>
+
+        <!-- Risk / Critic -->
+        <div class="node agent-node idle" id="node-risk" style="left: 950px; top: 350px; width: 160px;">
+          <div class="node-head">
+            <div class="node-icon rk">⚠</div>
+            <div class="node-title">Risk / Critic</div>
+          </div>
+          <div class="node-role">Challenges · Risk Register</div>
+          <div class="node-status"><span class="status-dot"></span><span class="status-text">idle</span></div>
+        </div>
+
+        <!-- Decision -->
+        <div class="node decision-node idle" id="node-decision" style="left: 1180px; top: 335px; width: 170px;">
+          <div class="node-head">
+            <div class="node-icon dc">★</div>
+            <div class="node-title">Decision</div>
+          </div>
+          <div class="decision-value" id="flowDecisionVal">—</div>
+          <div class="decision-confidence" id="flowConfidenceVal">confidence —</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── Decision banner ───────────── -->
+  <section id="decisionBanner" class="decision-banner hidden">
+    <div class="decision-badge" id="decisionBadge">—</div>
+    <div class="decision-meta">
+      <div><span class="label">Confidence</span><span class="value" id="confidenceVal">—</span></div>
+      <div><span class="label">Composite Severity</span><span class="value" id="compositeVal">—</span></div>
+      <div><span class="label">Success Criteria</span><span class="value" id="frameVal">—</span></div>
+    </div>
+  </section>
+
+  <!-- ───────────── Grid of panels ───────────── -->
+  <main class="grid">
+
+    <!-- Trace -->
+    <section class="panel trace-panel">
+      <div class="panel-head">
+        <h2>Agent Trace</h2>
+        <span class="panel-sub">live stream</span>
+      </div>
+      <div id="traceLog" class="trace-log">
+        <div class="trace-placeholder">Click <b>Convene War Room</b> to start the simulation.</div>
+      </div>
+    </section>
+
+    <!-- Metric charts -->
+    <section class="panel metrics-panel">
+      <div class="panel-head">
+        <h2>Metrics Dashboard</h2>
+        <span class="panel-sub">14 days · day 8 launch</span>
+      </div>
+      <div class="charts">
+        <div class="chart-card"><canvas id="chartCrash"></canvas></div>
+        <div class="chart-card"><canvas id="chartLatency"></canvas></div>
+        <div class="chart-card"><canvas id="chartPayment"></canvas></div>
+        <div class="chart-card"><canvas id="chartDau"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Sentiment -->
+    <section class="panel sentiment-panel">
+      <div class="panel-head">
+        <h2>User Sentiment</h2>
+        <span class="panel-sub">30 entries</span>
+      </div>
+      <div class="chart-card sentiment-chart"><canvas id="chartSentiment"></canvas></div>
+      <div class="perception" id="perceptionBox">Perception: —</div>
+      <h3>Top Issue Themes</h3>
+      <ul id="themeList" class="theme-list"></ul>
+    </section>
+
+    <!-- Risks -->
+    <section class="panel wide-panel">
+      <div class="panel-head">
+        <h2>Risk Register</h2>
+        <span class="panel-sub">from Risk/Critic agent</span>
+      </div>
+      <div id="riskList" class="risk-list"></div>
+    </section>
+
+    <!-- Action plan -->
+    <section class="panel wide-panel">
+      <div class="panel-head">
+        <h2>24–48h Action Plan</h2>
+        <span class="panel-sub">owners · windows</span>
+      </div>
+      <ol id="actionList" class="action-list"></ol>
+    </section>
+
+    <!-- Rationale & critic -->
+    <section class="panel wide-panel">
+      <div class="panel-head"><h2>Rationale &amp; Critic Challenges</h2></div>
+      <div class="two-col">
+        <div>
+          <h3>Rationale drivers</h3>
+          <ul id="rationaleList"></ul>
+        </div>
+        <div>
+          <h3>Critic challenges</h3>
+          <ul id="challengeList"></ul>
+          <h3>What would increase confidence</h3>
+          <ul id="missingList"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comms plan -->
+    <section class="panel wide-panel">
+      <div class="panel-head"><h2>Communication Plan</h2></div>
+      <div class="two-col">
+        <div class="comms-card">
+          <h3>Internal</h3>
+          <p id="internalMsg">—</p>
+        </div>
+        <div class="comms-card">
+          <h3>External</h3>
+          <p id="externalMsg">—</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    PurpleMerit Assessment · Multi-Agent War-Room · built with Python stdlib + vanilla JS
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
